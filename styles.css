@@ -1,5 +1,19 @@
 body {
+    display: flex;
+    background-color: rgb(227, 127, 127);
+    flex-direction: column;
+    justify-content: center;
     margin: 0px;
+}
+
+.headerContentDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.headerContentDiv h1 {
+    font-size: 100px;
 }
 
 .navBar-container {
@@ -9,16 +23,17 @@ body {
 }
 #navBar {
     display: inline-flex;
-    width: 90%;
-    height: 300px;
+    width: 90vw;
+    height: auto;
+    min-height: 150px;
     position: relative;
-    border: 1px solid black;
+    border: 1px solid rgb(169, 156, 156);
     margin: 20px 0px 20px 0px;
     padding: 10px 10px 10px 10px;
     overflow-x: auto;
 }
 
-.navBox {
+.navItem {
     min-width: 200px;
     display: flex;
     flex-direction: row;
@@ -27,15 +42,25 @@ body {
     border: 1px solid black;
     margin: 10px 20px 10px 20px;
     padding: 0px 10px 0px 10px;
-    animation: scroll 3s linear infinite;
+    
 }
 
+#contentDiv {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    row-gap: 20px;
+    column-gap: 20px;
+    margin: 30px 50px 30px 50px;
+}
 
-@keyframes scroll {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
+.contentItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid black;
+    width: auto;
+    max-width: auto;
+    min-width: auto;
+    height: auto;
 }
