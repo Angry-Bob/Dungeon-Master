@@ -9,30 +9,52 @@ async function callFunction() {
     }    
 }
 
-
-
-
-async function navBar() {
-    const data = await callFunction()
+async function loadNavData() {
+    const data = await callFunction();
     if (!data) {
         console.error("No data available for navBar.");
         return; // Exit if no data is available
     }
-    const navs = Object.keys(data)
+    return Object.keys(data);
+
+}
+
+
+
+async function navBar() {
     let navBar = document.getElementById('navBar')
     if (!navBar) {
         console.error("No element with ID 'navBar' found.");
-        return; // Exit if the 'navBar' element is not found
+        return;
     }
 
-    for (let index = 0; index < navs.length; index++) {
-        const navDivs = document.createElement('div')
-        navDivs.className = `navBox navBox-${index}`
-        navDivs.textContent = navs[index]
+    let allNavItems = await loadNavData(); // Initial load
+    let displayedNavItems = 0;
 
-        navBar.appendChild(navDivs)
 
+    function appendNavItems() {
+        for (let i = 0; i < 5 && displayedNavItems < allNavItems.length; i++) {
+            const navDivs = document.createElement('div');
+            navDivs.className = `navBox navBox-${displayedNavItems}`;
+            navDivs.textContent = allNavItems[displayedNavItems];
+
+            navBar.appendChild(navDivs);
+            displayedNavItems++;
+        }
     }
+
+    appendNavItems();
+
+    navBar.addEventListener('scroll', () => {
+        const nearBottom = navBar.scrollHeight - navBar.scrollTop <= navBar.clientHeight + 50; // 50px before reaching the bottom
+
+        if (nearBottom && displayedNavItems < allNavItems.length) {
+            appendNavItems();
+        }
+
+    });
+
+``
 
 }
 

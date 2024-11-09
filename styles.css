@@ -3,11 +3,13 @@ body {
 }
 
 .navBar-container {
+    display: flex;
+    justify-content: center;
     width: 100%;
 }
 #navBar {
     display: inline-flex;
-    width: 80%;
+    width: 90%;
     height: 300px;
     position: relative;
     border: 1px solid black;
@@ -25,7 +27,7 @@ body {
     border: 1px solid black;
     margin: 10px 20px 10px 20px;
     padding: 0px 10px 0px 10px;
-    transition: transform 1s ease-in-out;
+    animation: scroll 3s linear infinite;
 }
 
 
