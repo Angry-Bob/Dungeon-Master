@@ -144,6 +144,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    
     background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
     display: flex;
     align-items: center;
@@ -156,8 +157,10 @@ body {
     color: #493712;
     background-color: #fff;
     padding: 20px;
+    max-height: 400px;
+    overflow: scroll;
     border-radius: 8px;
-    width: 80%; /* Set width to adjust modal size */
+    width: 70%; /* Set width to adjust modal size */
     max-width: 500px; /* Maximum width for larger screens */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
     position: relative; /* Allows absolute positioning for the close button */
@@ -166,17 +169,22 @@ body {
 
 /* Close button */
 .close {
+    
     position: absolute;
+    background-color: #cd3018;
+    padding: 5px;
+    border-radius: 8px;
     top: 10px;
     right: 10px;
     font-size: 20px;
     cursor: pointer;
-    color: #888;
+    color: #ffffff;
     transition: color 0.3s;
 }
 
 .close:hover {
-    color: #333; /* Darken color on hover */
+    color: #a80808; /* Darken color on hover */
+    background-color: #ffaa00;
 }
 
 /* Fade-in animation */
