@@ -2,7 +2,7 @@
 
 const url = 'https://www.dnd5eapi.co/api/';
 
-
+const modalEventId = document.getElementsByClassName('modal-content')
 
 
 // ____Functions___________________________________________________________________
@@ -16,15 +16,16 @@ async function callFunction(apiUrl) {
         console.log(`Unable to complete HTTP request: ${e}`);
     }    
 }
+
 // ----------------------------------------------------------------------
-// Function responsible for keeping data
+// Function responsible for loading navigation data and calling the navbar render
 async function loadNavData() {
     const data = await callFunction(url);
     if (!data) {
         console.error("No data available for navBar.");
         return; // Exit if no data is available
     }
-    return Object.keys(data);
+    renderNavBar(Object.keys(data)); // Call renderNavBar directly with fetched data
 }
 
 // ----------------------------------------------------------------------
@@ -44,63 +45,75 @@ function renderNavBar(data) {
         navDiv.textContent = item;
         navBar.appendChild(navDiv);
 
-        // Event Listener for each Navigational div
+        // Event Listener for each navigational div
         navDiv.addEventListener('click', async function() {
             divForContentDivs.innerHTML = ''; // Clear existing content
             await fetchAndRenderContent(item, divForContentDivs); // Fetch and render content for clicked item
+            ; // Open the modal displaying the content
         });
     });
+
 }
+
 // ----------------------------------------------------------------------
 // Function to fetch and render content for the selected navigation item
 async function fetchAndRenderContent(item, contentDiv) {
-    try {
-        const dataLoad = await callFunction(url + item);
-        const content = dataLoad.results;
-        
-        if (Array.isArray(content)) {
-            content.forEach(entry => {
-                const divsContent = document.createElement('div');
-                divsContent.className = `contentItem contentItem-${entry.index}`;
-                divsContent.innerHTML = `<h2>${entry.name}</h2>`;
-                contentDiv.appendChild(divsContent);
-            });
-        } else {
+    const dataLoad = await callFunction(url + item);
+    const content = dataLoad?.results;
+
+    if (Array.isArray(content)) {
+        content.forEach(entry => {
             const divsContent = document.createElement('div');
-            divsContent.className = 'contentItem';
-            divsContent.textContent = JSON.stringify(content);
+            divsContent.className = `contentItem contentItem-${entry.index}`;
+            divsContent.innerHTML = `<h2>${entry.name}</h2>`;
             contentDiv.appendChild(divsContent);
-        }
-    } catch (e) {
-        console.error(`Unable to fetch data for ${item}: ${e}`);
+
+            // Add click event listener to each content item to open a modal
+            divsContent.addEventListener('click', () => {
+                contentModal(entry.index); // Pass the entry name or other data to the modal
+            });
+        });
+    } else if (content) {
+        const divsContent = document.createElement('div');
+        divsContent.className = 'contentItem';
+        divsContent.textContent = JSON.stringify(content);
+        contentDiv.appendChild(divsContent);
+
+        // If there's a single content item, add a click event listener for the modal
+        divsContent.addEventListener('click', () => {
+            contentModal(JSON.stringify(content));
+        });
+    } else {
+        console.error(`No content available for ${item}.`);
     }
 }
 
-async function contentCardModal() {
-    const modalData = await fetchAndRenderContent(item, contentDiv)
-    console.log(modalData)
+// Open the modal with content when a content item is clicked
+async function contentModal(item) {
+    // Fetch additional content details if needed or directly pass `item`
+    console.log(item)
+    openModal(`Content for ${item}`);
+
+
+    
 }
-
-
-
-
-
 
 // ----------------------------------------------------------------------
 // Functions to open and close modal
 // ----------------------------------------------------------------------
 
 function openModal(content) {
+
     // Create the modal container
     const modal = document.createElement('div');
     modal.className = 'modal';  // Add CSS class for styling
-
+    console.log(content)
     // Create the modal content
     const modalContent = document.createElement('div');
     modalContent.className = 'modal-content';
 
     // Add the content to the modal
-    modalContent.innerHTML = `<h2>${content}</h2>`;  // You can customize this to display detailed content
+    modalContent.innerHTML = `<h2>${content}</h2>`;  // Customize this to display detailed content
 
     // Add a close button
     const closeButton = document.createElement('span');
@@ -120,9 +133,11 @@ function closeModal(modal) {
     document.body.removeChild(modal); // Remove the modal from the DOM
 }
 
+// ___________________________________________________________________________
+// -----------------------------------------------------------------------------
 
-function contentModal(item) {
-    openModal(`Content for ${item}`);
+async function modalDataFunction(item) {
+    console.log(item)
 }
 
 
@@ -133,36 +148,7 @@ function contentModal(item) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-// Main function to initialize navbar with data
-async function initNavBar() {
-    const navData = await loadNavData();
-    if (navData) renderNavBar(navData);
-}
 
 // ____Event Listeners____________________________________________________
 // ----------------------------------------------------------------------
-document.addEventListener('DOMContentLoaded', initNavBar);
-
-
-navDiv.addEventListener('click', async function() {
-    divForContentDivs.innerHTML = ''; // Clear existing content
-    await fetchAndRenderContent(item, divForContentDivs); // Fetch and render content for clicked item
-    console.log(contentCardModal(item)); // Open the modal displaying the content
-});
-
-
-
-
-
+document.addEventListener('DOMContentLoaded', loadNavData); // Initialize navbar on load
