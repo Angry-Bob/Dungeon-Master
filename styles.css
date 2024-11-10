@@ -104,6 +104,7 @@ body {
 }
 #contentDiv::-webkit-scrollbar {
     width: 10px;
+    height: 10px;
     
 }
 #contentDiv::-webkit-scrollbar-thumb {

@@ -25,7 +25,7 @@ async function loadNavData() {
         console.error("No data available for navBar.");
         return; // Exit if no data is available
     }
-    renderNavBar(Object.keys(data)); // Call renderNavBar directly with fetched data
+   renderNavBar(Object.keys(data)); // Call renderNavBar directly with fetched data
 }
 
 // ----------------------------------------------------------------------
@@ -33,7 +33,7 @@ async function loadNavData() {
 function renderNavBar(data) {
     let navBar = document.getElementById('navBar');
     const divForContentDivs = document.getElementById('contentDiv');
-
+    console.log(data)
     if (!navBar || !divForContentDivs) {
         console.error("Required elements not found.");
         return;
@@ -60,17 +60,19 @@ function renderNavBar(data) {
 async function fetchAndRenderContent(item, contentDiv) {
     const dataLoad = await callFunction(url + item);
     const content = dataLoad?.results;
-
+    console.log(item)
+    const contentCardUrl = 'https://www.dnd5eapi.co'
     if (Array.isArray(content)) {
         content.forEach(entry => {
             const divsContent = document.createElement('div');
             divsContent.className = `contentItem contentItem-${entry.index}`;
             divsContent.innerHTML = `<h2>${entry.name}</h2>`;
             contentDiv.appendChild(divsContent);
+            console.log(entry)
 
             // Add click event listener to each content item to open a modal
             divsContent.addEventListener('click', () => {
-                contentModal(entry.index); // Pass the entry name or other data to the modal
+                    contentModal(entry.url); // Pass the entry name or other data to the modal
             });
         });
     } else if (content) {
@@ -81,6 +83,12 @@ async function fetchAndRenderContent(item, contentDiv) {
 
         // If there's a single content item, add a click event listener for the modal
         divsContent.addEventListener('click', () => {
+
+
+
+            console.log(content)
+
+
             contentModal(JSON.stringify(content));
         });
     } else {
@@ -90,9 +98,28 @@ async function fetchAndRenderContent(item, contentDiv) {
 
 // Open the modal with content when a content item is clicked
 async function contentModal(item) {
+    const altUrl = 'https://www.dnd5eapi.co'
     // Fetch additional content details if needed or directly pass `item`
-    console.log(item)
-    openModal(`Content for ${item}`);
+    const contentInformationCall = await axios.get(altUrl + item)
+    const theRealData = contentInformationCall.data
+    let descriptionHTML = '';
+    const desc = theRealData.desc
+
+    desc.forEach(description => {
+        descriptionHTML += `<h1>${description}</h1>`; // Append each description to the HTML
+    });
+
+
+    openModal(
+        
+        `
+        <h1>${theRealData.full_name}</h1>
+    <p>${theRealData.index}</p>
+    ${descriptionHTML} 
+        
+        
+        
+        `);
 
 
     
@@ -107,7 +134,6 @@ function openModal(content) {
     // Create the modal container
     const modal = document.createElement('div');
     modal.className = 'modal';  // Add CSS class for styling
-    console.log(content)
     // Create the modal content
     const modalContent = document.createElement('div');
     modalContent.className = 'modal-content';
@@ -136,9 +162,7 @@ function closeModal(modal) {
 // ___________________________________________________________________________
 // -----------------------------------------------------------------------------
 
-async function modalDataFunction(item) {
-    console.log(item)
-}
+
 
 
 
