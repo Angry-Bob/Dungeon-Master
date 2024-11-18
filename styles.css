@@ -11,6 +11,23 @@ body {
     justify-content: center;
     margin: 0px;
 }
+/* _______________________________________________ */
+
+ul {
+    display: flex;
+}
+
+li {
+    text-decoration: none;
+    color: #ffffff;
+    margin-right: 60px; ;
+    list-style: none;
+}
+
+.page-nav {
+    text-decoration: none;
+    list-style: none;
+}
 /* ----------------------------------------------- */
 /* Header */
 .headerContentDiv{

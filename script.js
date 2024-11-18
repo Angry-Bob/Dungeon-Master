@@ -1,7 +1,7 @@
 //____Global Variables & Libraries______________________________________________
 
 const url = 'https://www.dnd5eapi.co/api/';
-
+const url2 = 'https://www.dnd5eapi.co';
 const modalEventId = document.getElementsByClassName('modal-content')
 
 
@@ -11,6 +11,11 @@ const modalEventId = document.getElementsByClassName('modal-content')
 async function callFunction(apiUrl) {
     try {
         const response = await axios.get(apiUrl);
+        console.log(response.data['classes'])
+        const response2 = await axios.get(url2 + response.data['classes'])
+        console.log(response2.data.results[7].url)
+        const response3 = await axios.get(url2 + response2.data[7].url)
+        console.log(response3)
         return response.data;
     } catch (e) {
         console.log(`Unable to complete HTTP request: ${e}`);
